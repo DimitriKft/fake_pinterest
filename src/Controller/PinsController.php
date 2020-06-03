@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PinsController extends AbstractController
 {
     /**
-     * @Route("/", name="pins")
+     * @Route("/", name="home")
      */
     public function index(PinRepository $repo): Response
     {
@@ -29,16 +29,16 @@ class PinsController extends AbstractController
        if($request->isMethod('POST'))
        {
            $data = $request->request->all();
-
-           $pin = new Pin;
-           $pin->setTitle($data['title']);
-           $pin->setDescription($data['description']);
-           $em->persist($pin);
-           $em->flush();
-
-           dd($data);
-
-           return $this->redirect('/');
+           if($this->isCsrfTokenValid('pins_create', $data['_token']))
+           {
+               $pin = new Pin;
+               $pin->setTitle($data['title']);
+               $pin->setDescription($data['description']);
+               $em->persist($pin);
+               $em->flush();
+               
+            }
+               return $this->redirectToRoute('home');
        }
         return $this->render('pins/create.html.twig');
     }
