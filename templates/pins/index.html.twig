@@ -7,15 +7,25 @@
     <title>Pinterest clone</title>
 </head>
 <body>
-    <h1>Pins index</h1>
+    <h1>Alls Pins</h1>
+
+
     <a href="{{ path('create') }}">Create Pin</a>
     {% for pin in pins %}
     <article>
         <h1> {{ pin.title }}</h1>
         <p> {{ pin.description }}</p>
     </article>
-       
+    {% else %}
+        <p>Sorry, no pins yet !</p>
     {% endfor %}
+
+
+    {% if realisation.type == "game"  %}
+        <h5>{{ realisation.tile }}</h5>
+        <p>{{ realisation.description }}</p>
+    {% endif %}
+  
     
 </body>
 </html>

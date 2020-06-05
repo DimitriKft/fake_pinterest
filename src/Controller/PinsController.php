@@ -24,7 +24,19 @@ class PinsController extends AbstractController
         return $this->render('pins/index.html.twig',compact('pins'));
     }
 
-      /**
+
+    /**
+     * @Route("/pins/{id<[0-9] +>}")
+     */
+    public function show(PinRepository $repo, int $id): Response
+    {
+     
+        $pin = $repo->find($id);
+     
+        return $this->render('pins/show.html.twig', compact('pin'));
+    }
+
+    /**
      * @Route("/pins/create", name="create", methods="GET|POST")
      */
     public function create(Request $request, EntityManagerInterface $em): Response
@@ -35,7 +47,6 @@ class PinsController extends AbstractController
         $form = $this->createFormBuilder($pin)
              ->add('title', null, ['attr' => ['autofocus' => true]])
              ->add('description', null, ['attr' => ['rows' => 10, 'cols' => 50]])     
-             ->add('submit', SubmitType::class, ['label' => 'Create Pin'])
              ->getForm()
         ;
       
@@ -52,4 +63,6 @@ class PinsController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    
 }
